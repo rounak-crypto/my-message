@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message For You</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+        #container {
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 90%;
+        }
+        h1 { color: #ff4d6d; font-size: 1.8rem; min-height: 60px; }
+        .buttons { margin-top: 30px; height: 50px; position: relative; }
+        button {
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+        #yesBtn { background-color: #ff4d6d; color: white; margin-right: 10px; }
+        #noBtn {
+            background-color: #adb5bd;
+            color: white;
+            position: absolute;
+        }
+        img { width: 250px; height: 250px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
 
+    <div id="container">
+        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Cute animation">
+        <h1 id="question">Hey, I have something to tell you...</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn" onclick="nextStep()">Continue</button>
+            <button id="noBtn" onmouseover="moveButton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+
+        const content = [
+            {
+                text: "I just wanted to say... I love you ❤️",
+                btn: "I love you too!",
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fXy0/giphy.gif"
+            },
+            {
+                text: "Will you stay with me for the rest of my life?",
+                btn: "Yes, forever!",
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/lTQF0ODLLJHzaOtBto/giphy.gif"
+            },
+            {
+                text: "You make me the happiest person alive. 🌎✨",
+                btn: "Click for a surprise",
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/26BRv0ThflsHCqfJA/giphy.gif"
+            },
+            {
+                text: "Yay! I can't wait for our future together! 🥰❤️",
+                btn: "I Love You!",
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/T86bmylu9Y5d5I5vRz/giphy.gif"
+            }
+        ];
+
+        function nextStep() {
+            if (currentStep < content.length) {
+                document.getElementById('question').innerText = content[currentStep].text;
+                document.getElementById('yesBtn').innerText = content[currentStep].btn;
+                document.getElementById('mainGif').src = content[currentStep].gif;
+                currentStep++;
+            } else {
+                // Final state
+                document.getElementById('noBtn').style.display = 'none';
+                document.getElementById('yesBtn').style.display = 'none';
+                document.getElementById('question').innerText = "Sent with love! 💌";
+            }
+        }
+
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.getElementById('container');
+            
+            // Generate random positions within the viewport
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+    </script>
+</body>
+</html>
