@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Special Message For You</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
             display: flex;
@@ -13,94 +14,119 @@
             height: 100vh;
             margin: 0;
             background-color: #fff0f3;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             text-align: center;
             overflow: hidden;
         }
         #container {
-            padding: 20px;
+            padding: 30px;
             background: white;
-            border-radius: 20px;
+            border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 90%;
+            width: 320px;
+            position: relative;
         }
-        h1 { color: #ff4d6d; font-size: 1.8rem; min-height: 60px; }
-        .buttons { margin-top: 30px; height: 50px; position: relative; }
+        h1 { color: #ff4d6d; font-size: 1.4rem; min-height: 70px; margin-bottom: 20px; }
+        .buttons { 
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px; 
+            height: 50px;
+        }
         button {
-            font-size: 1.2rem;
-            padding: 12px 25px;
+            font-size: 1rem;
+            padding: 10px 20px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.2s ease;
             font-weight: bold;
         }
-        #yesBtn { background-color: #ff4d6d; color: white; margin-right: 10px; }
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 10; }
         #noBtn {
             background-color: #adb5bd;
             color: white;
-            position: absolute;
+            position: relative; /* Starts normal, becomes absolute on hover */
+            transition: 0.1s ease;
         }
-        img { width: 250px; height: 250px; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
+        img { width: 180px; height: 180px; object-fit: contain; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div id="container">
-        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Cute animation">
+        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
         <h1 id="question">Hey, I have something to tell you...</h1>
         
         <div class="buttons">
             <button id="yesBtn" onclick="nextStep()">Continue</button>
-            <button id="noBtn" onmouseover="moveButton()">No</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
     </div>
 
     <script>
-        let currentStep = 0;
+        let step = 0;
 
         const content = [
             {
                 text: "I just wanted to say... I love you ❤️",
                 btn: "I love you too!",
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fXy0/giphy.gif"
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/K976VvOqhJ56M/giphy.gif"
             },
             {
                 text: "Will you stay with me for the rest of my life?",
                 btn: "Yes, forever!",
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/lTQF0ODLLJHzaOtBto/giphy.gif"
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/EatwJZRUIv41G/giphy.gif"
             },
             {
-                text: "You make me the happiest person alive. 🌎✨",
+                text: "You make me the happiest person alive! 🌎✨",
                 btn: "Click for a surprise",
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/26BRv0ThflsHCqfJA/giphy.gif"
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/69id6xJvP1Ddm/giphy.gif"
             },
             {
                 text: "Yay! I can't wait for our future together! 🥰❤️",
                 btn: "I Love You!",
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHYwdWp6ZzZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/T86bmylu9Y5d5I5vRz/giphy.gif"
+                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fXy0/giphy.gif"
             }
         ];
 
         function nextStep() {
-            if (currentStep < content.length) {
-                document.getElementById('question').innerText = content[currentStep].text;
-                document.getElementById('yesBtn').innerText = content[currentStep].btn;
-                document.getElementById('mainGif').src = content[currentStep].gif;
-                currentStep++;
+            // Trigger Confetti ONLY when she clicks "I love you too!"
+            // At this point, step is 1 because it's the answer to the 1st question
+            if (step === 1) {
+                confetti({
+                    particleCount: 200,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#ff4d6d', '#ffffff', '#ff85a1']
+                });
+            }
+
+            if (step < content.length) {
+                const item = content[step];
+                document.getElementById('question').innerText = item.text;
+                document.getElementById('yesBtn').innerText = item.btn;
+                document.getElementById('mainGif').src = item.gif;
+                
+                // Reset No button to original position for each new question
+                const noBtn = document.getElementById('noBtn');
+                noBtn.style.position = "relative";
+                noBtn.style.left = "0";
+                noBtn.style.top = "0";
+                
+                step++;
             } else {
-                // Final state
-                document.getElementById('noBtn').style.display = 'none';
                 document.getElementById('yesBtn').style.display = 'none';
-                document.getElementById('question').innerText = "Sent with love! 💌";
+                document.getElementById('noBtn').style.display = 'none';
+                document.getElementById('question').innerText = "You're stuck with me now! ❤️";
+                document.getElementById('mainGif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/T86bmylu9Y5d5I5vRz/giphy.gif";
             }
         }
 
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const container = document.getElementById('container');
+            noBtn.style.position = "absolute";
             
-            // Generate random positions within the viewport
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
