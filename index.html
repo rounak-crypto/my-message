@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine?</title>
+    <title>A Special Message For You</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
@@ -12,79 +12,65 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
             overflow: hidden;
         }
-        #card {
+        #container {
+            padding: 30px;
             background: white;
-            padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center;
-            width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 320px;
             position: relative;
             min-height: 450px;
         }
-        img { 
-            width: 220px; 
-            height: 220px; 
-            border-radius: 20px; 
-            margin-bottom: 20px;
-            object-fit: contain;
-        }
-        h1 { 
-            color: #d0004e; 
-            font-size: 1.6rem; 
-            margin-bottom: 30px;
-            line-height: 1.4;
-        }
-        .btn-box {
+        h1 { color: #ff4d6d; font-size: 1.4rem; min-height: 70px; margin-bottom: 20px; }
+        .buttons { 
             display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            height: 80px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px; 
+            height: 150px; /* Area for No button to move in */
             position: relative;
         }
         button {
-            padding: 15px 35px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 12px 25px;
             border: none;
-            border-radius: 15px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.1s;
+            font-weight: 900; /* Bold highlighted text */
         }
-        #yesBtn { 
-            background-color: #ff4d6d; 
-            color: white; 
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-        }
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 10; }
         #noBtn {
-            background-color: #f1f1f1;
-            color: #333;
+            background-color: #333333; /* High contrast Dark Grey */
+            color: white;
             position: absolute;
-            left: 210px; /* Starting position */
-            transition: all 0.2s ease-out; /* Smooth slide like the video */
-            white-space: nowrap;
+            left: 60%;
+            transition: all 0.15s ease-out;
+            z-index: 5;
         }
+        img { width: 180px; height: 180px; object-fit: contain; margin-bottom: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="card">
-        <img id="displayGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
-        <h1 id="mainText">Hey, I have something to tell you...</h1>
+    <div id="container">
+        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
+        <h1 id="question">Hey, I have something to tell you...</h1>
         
-        <div class="btn-box">
-            <button id="yesBtn" onclick="handleYes()">Continue</button>
-            <button id="noBtn" onmouseover="dodgeNo()" onclick="dodgeNo()">No</button>
+        <div class="buttons" id="moveArea">
+            <button id="yesBtn" onclick="nextStep()">Continue</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
     </div>
 
     <script>
         let step = 0;
-        const scenarios = [
+
+        const content = [
             {
                 text: "I just wanted to say... I love you ❤️",
                 btn: "I love you too!",
@@ -102,64 +88,52 @@
             },
             {
                 text: "Yay! I can't wait for our future together! 🥰❤️",
-                btn: "Done!",
+                btn: "I Love You!",
                 gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHW2fXy0/giphy.gif"
             }
         ];
 
-        function handleYes() {
-            // Trigger Confetti ONLY when she clicks "I love you too!"
+        function nextStep() {
+            // Unique animations for every answer
             if (step === 1) {
-                const duration = 3 * 1000;
-                const end = Date.now() + duration;
-
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); // Standard Popper
+            } else if (step === 2) {
+                confetti({ particleCount: 100, shapes: ['star'], colors: ['#FFD700', '#FFFFFF'] }); // Star Shower
+            } else if (step === 3) {
+                var end = Date.now() + (2 * 1000);
                 (function frame() {
-                    confetti({
-                        particleCount: 3,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 },
-                        colors: ['#ff4d6d', '#ffffff']
-                    });
-                    confetti({
-                        particleCount: 3,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 },
-                        colors: ['#ff4d6d', '#ffffff']
-                    });
-
-                    if (Date.now() < end) {
-                        requestAnimationFrame(frame);
-                    }
-                }());
+                    confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0 } });
+                    confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1 } });
+                    if (Date.now() < end) requestAnimationFrame(frame);
+                }()); // Side Fireworks
             }
 
-            if (step < scenarios.length) {
-                document.getElementById('mainText').innerText = scenarios[step].text;
-                document.getElementById('yesBtn').innerText = scenarios[step].btn;
-                document.getElementById('displayGif').src = scenarios[step].gif;
+            if (step < content.length) {
+                const item = content[step];
+                document.getElementById('question').innerText = item.text;
+                document.getElementById('yesBtn').innerText = item.btn;
+                document.getElementById('mainGif').src = item.gif;
                 
-                // Reset No button to initial side-by-side position
+                // Reset No button inside the moveArea box
                 const noBtn = document.getElementById('noBtn');
-                noBtn.style.top = "15px"; 
-                noBtn.style.left = "210px";
+                noBtn.style.top = "0";
+                noBtn.style.left = "60%";
                 
                 step++;
             } else {
                 document.getElementById('yesBtn').style.display = 'none';
                 document.getElementById('noBtn').style.display = 'none';
-                document.getElementById('mainText').innerText = "Sent with love! 💌";
+                document.getElementById('question').innerText = "You're stuck with me now! ❤️";
             }
         }
 
-        function dodgeNo() {
+        function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const card = document.getElementById('card');
+            const moveArea = document.getElementById('moveArea');
             
-            // Calculate boundaries so it stays inside the white card
-            const maxX = card.clientWidth - noBtn.clientWidth - 20;
-            const maxY = card.clientHeight - noBtn.clientHeight - 20;
+            // Constrain movement inside the moveArea box only
+            const maxX = moveArea.clientWidth - noBtn.clientWidth;
+            const maxY = moveArea.clientHeight - noBtn.clientHeight;
 
             const randomX = Math.floor(Math.random() * maxX);
             const randomY = Math.floor(Math.random() * maxY);
