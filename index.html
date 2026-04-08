@@ -70,7 +70,7 @@
 <body>
 
     <div id="container">
-        <img id="mainGif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
+        <img id="mainGif" src="https://i.giphy.com/v6aOebdEG8wT7p6jBh.webp" alt="Panda">
         <h1 id="question">Hey, I have something to tell you...</h1>
         
         <div class="buttons-container">
@@ -83,27 +83,27 @@
         let step = 0;
         let yesScale = 1;
 
-        // I updated the URLs to "i.giphy.com" links which are more reliable for direct embedding
-       const content = [
-    {
-        text: "I just wanted to say... I love you ❤️",
-        btn: "I love you too!",
-        noText: "I hate you", 
-        gif: "https://media4.giphy.com/media/P8WZZ0NYdbXAA/giphy.gif"
-    },
-    {
-        text: "Will you stay with me for the rest of my life?",
-        btn: "Yes, forever!",
-        noText: "No", 
-        gif: "https://media.giphy.com/media/EatwJZRUIv41G/giphy.gif"
-    },
-    {
-        text: "I'm gonna love you till my last breath ❤️🌎✨",
-        btn: "Click for a surprise",
-        noText: "No",
-        gif: "https://media.giphy.com/media/69id6xJvP1Ddm/giphy.gif"
-    }
-];
+        // FIXED GIF URLS USING DIRECT CDN LINKS
+        const content = [
+            {
+                text: "I just wanted to say... I love you ❤️",
+                btn: "I love you too!",
+                noText: "I hate you", // First sentence custom text
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3N5YmRyam9vYm1jcm9ueWpwaXN4eXp5YnJ4eHh4eHh4eHh4eHh4eHAmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PXMvSzk3NlZ2T3FoSjU2TS9naWZ5LmdpZg/giphy.gif"
+            },
+            {
+                text: "Will you stay with me for the rest of my life?",
+                btn: "Yes, forever!",
+                noText: "No", // Back to original
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3N5YmRyam9vYm1jcm9ueWpwaXN4eXp5YnJ4eHh4eHh4eHh4eHh4eHAmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWcvRWF0d0paUlVJdkQxRy9naWZ5LmdpZg/giphy.gif"
+            },
+            {
+                text: "I'm gonna love you till my last breath ❤️🌎✨",
+                btn: "Click for a surprise",
+                noText: "No",
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3N5YmRyam9vYm1jcm9ueWpwaXN4eXp5YnJ4eHh4eHh4eHh4eHh4eHAmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWcvNjlpZDZ4SndQMURtbS9naWZ5LmdpZg/giphy.gif"
+            }
+        ];
 
         window.onload = resetNoButton;
 
@@ -138,7 +138,7 @@
                 document.getElementById('yesBtn').style.display = 'none';
                 document.getElementById('noBtn').style.display = 'none';
                 document.getElementById('question').innerText = "You're mine forever now! ❤️";
-                document.getElementById('mainGif').src = "https://i.giphy.com/media/L4lvBpHW2fXy0/giphy.gif";
+                document.getElementById('mainGif').src = "https://i.giphy.com/L4lvBpHW2fXy0/giphy.gif";
                 confetti({ particleCount: 300, spread: 200, origin: { y: 0.5 } });
             }
         }
