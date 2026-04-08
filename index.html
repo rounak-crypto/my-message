@@ -70,7 +70,7 @@
 <body>
 
     <div id="container">
-        <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
+        <img id="mainGif" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmdueHh3Z3Y0Z3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOebdEG8wT7p6jBh/giphy.gif" alt="Panda">
         <h1 id="question">Hey, I have something to tell you...</h1>
         
         <div class="buttons-container">
@@ -83,28 +83,28 @@
         let step = 0;
         let yesScale = 1;
 
+        // I updated the URLs to "i.giphy.com" links which are more reliable for direct embedding
         const content = [
             {
                 text: "I just wanted to say... I love you ❤️",
                 btn: "I love you too!",
-                noText: "I hate you", // UPDATED: Changed from 'No'
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/K976VvOqhJ56M/giphy.gif"
+                noText: "I hate you", 
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/K976VvOqhJ56M/giphy.gif"
             },
             {
                 text: "Will you stay with me for the rest of my life?",
                 btn: "Yes, forever!",
-                noText: "No", // UPDATED: Reverted to 'No'
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/EatwJZRUIv41G/giphy.gif"
+                noText: "No", 
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/EatwJZRUIv41G/giphy.gif"
             },
             {
                 text: "I'm gonna love you till my last breath ❤️🌎✨",
                 btn: "Click for a surprise",
                 noText: "No",
-                gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/69id6xJvP1Ddm/giphy.gif"
+                gif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ3ZzRnd3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/69id6xJvP1Ddm/giphy.gif"
             }
         ];
 
-        // Initial Position setup
         window.onload = resetNoButton;
 
         function resetNoButton() {
@@ -112,14 +112,12 @@
             const yesBtn = document.getElementById('yesBtn');
             const rect = yesBtn.getBoundingClientRect();
             
-            // Put No button exactly to the right of Yes button
             noBtn.style.position = 'fixed';
             noBtn.style.left = (rect.right + 20) + "px";
             noBtn.style.top = rect.top + "px";
         }
 
         function nextStep() {
-            // Animations
             if (step === 1) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             else if (step === 2) confetti({ particleCount: 200, shapes: ['star'], colors: ['#FFD700', '#ff4d6d'] });
             else if (step === 3) confetti({ particleCount: 250, spread: 160, origin: { y: 0.6 } });
@@ -131,18 +129,16 @@
                 document.getElementById('noBtn').innerText = item.noText;
                 document.getElementById('mainGif').src = item.gif;
                 
-                // Reset size and snap No button back to position
                 yesScale = 1;
                 document.getElementById('yesBtn').style.transform = `scale(${yesScale})`;
                 
-                // Give the DOM a millisecond to update before resetting position
                 setTimeout(resetNoButton, 10);
                 step++;
             } else {
                 document.getElementById('yesBtn').style.display = 'none';
                 document.getElementById('noBtn').style.display = 'none';
                 document.getElementById('question').innerText = "You're mine forever now! ❤️";
-                document.getElementById('mainGif').src = "https://media.giphy.com/media/L4lvBpHW2fXy0/giphy.gif";
+                document.getElementById('mainGif').src = "https://i.giphy.com/media/L4lvBpHW2fXy0/giphy.gif";
                 confetti({ particleCount: 300, spread: 200, origin: { y: 0.5 } });
             }
         }
@@ -151,13 +147,11 @@
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
 
-            // Random screen location
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
 
-            // Make Yes button grow
             yesScale += 0.25;
             yesBtn.style.transform = `scale(${yesScale})`;
         }
